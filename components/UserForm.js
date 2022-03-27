@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { View, TextInput, Button, Text } from 'react-native';
 import { useForm } from 'react-hook-form';
 
-const InscriptionScreen = () => {
+const UserInputScreen = () => {
   const { register, handleSubmit, setValue } = useForm();
   const onSubmit = useCallback(formData => {
     console.log(formData);
@@ -42,4 +42,4 @@ const InscriptionScreen = () => {
   );
 };
 
-export default InscriptionScreen;
+export default UserInputScreen;

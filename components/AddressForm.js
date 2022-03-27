@@ -13,13 +13,6 @@ const InscriptionScreen = () => {
         'Content-Type': 'application/json'
       }, 
       body: JSON.stringify(formData)
-      // body: JSON.stringify({
-      //   street1: {street1}, 
-      //   street2: {street2}, 
-      //   city: {city}, 
-      //   state: {state}, 
-      //   zip: {zip}
-      // })
     })
   }, []);
   const onChangeField = useCallback(

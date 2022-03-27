@@ -9,6 +9,7 @@ import 'react-native-gesture-handler';
 import HomeScreen from "./screens/HomeScreen";
 import UserScreen from "./screens/UserScreen";
 import MapScreen from "./screens/MapScreen";
+import MapDisplay from "./screens/Map"; 
 
 const TabNavigator = createBottomTabNavigator({
 Home: {
@@ -47,8 +48,8 @@ User: {
 	},
 	},
 },
-Map: {
-	screen: MapScreen,
+MapContainer: {
+	screen: MapDisplay,
 	navigationOptions: {
 	tabBarLabel: "Map",
 	tabBarOptions: {
