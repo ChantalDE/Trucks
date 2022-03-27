@@ -63,6 +63,8 @@ class FoodTruck:
         self.closetime = closetime
         self.foodtags = foodtags
         self.rating = rating
+        def printTruck(self):
+            print("The name is %s", self.name)
 
 queryTest = """CREATE TABLE test2(
            test INTEGER
@@ -112,15 +114,27 @@ def display():
     #display whatever is in the foodTable
     connection = psycopg2.connect(user=username, password=password, host=host, port=port, dbname=database)
     cursor = connection.cursor()
-    cursor.execute("SELECT name, streetName, city, zipcode FROM foodTruckAddress;")
-    #cursor.execute()
+    cursor.execute("SELECT name, address, opentime, closetime, foodtags, rating FROM foodtruckusers;")
     rows = cursor.fetchall()
     connection.commit()
-
     logging.debug("Status message: %s", cursor.statusmessage)
     return json.dumps(rows, indent=4, sort_keys=True, default=str), 200
 
+@app.route("/getallfoodtrucks")
+def getAllFoodTrucks():
+    trucks = []
+    connection = psycopg2.connect(user=username, password=password, host=host, port=port, dbname=database)
+    cursor = connection.cursor()
+    cursor.execute("SELECT name, address, opentime, closetime, foodtags, rating FROM foodtruckusers;")
+    rows = cursor.fetchall()
+    connection.commit()
+    logging.debug("Status message: %s", cursor.statusmessage)
 
+    for row in rows:
+        temp = FoodTruck(row[0], row[1], row[2], row[3], row[4], row[5])
+        trucks.append(temp)
+    #trucks[0].printTruck()
+    return json.dumps(trucks[0].name, indent=4, sort_keys=True, default=str), 200
 
 @app.route("/insert")
 def insert():
@@ -128,23 +142,15 @@ def insert():
     #get JSON
     return "<p>Hello, World!</p>"
 
-@app.route("/insert2")
-def insert2():
-    #get data from db
-    name = 'TEST2'
-    street = 'Test Street'
-    city = 'T city'
-    zipcode = 11212
+@app.route("/updateusertable")
+def updateUserTable(name, address, opentime, closetime, foodtags, rating):
+    #get data from scraping?
     connection = psycopg2.connect(user=username, password=password, host=host, port=port, dbname=database)
     cursor = connection.cursor()
-    #cursor.execute(addressCreateTable)
-    #cursor.execute("DROP TABLE foodTruckUsers;")
-    cursor.execute(userCreateTable)
-    cursor.execute("INSERT INTO foodTruckAddress(Name, StreetName, City, ZipCode) VALUES (%s, %s, %s, %s);", (name, street, city, zipcode))
+    cursor.execute("INSERT INTO foodTruckUsers(Name, Address, OpenTime, CloseTime, Foodtags, Rating) VALUES (%s, %s, %s, %s, %s, %s);", (name, address, opentime, closetime, foodtags, rating))
     connection.commit()
     logging.debug("Status message: %s", cursor.statusmessage)
-
-    return "<p>Hello, World!</p>"
+    return "Data inserted"
 
 
 @app.route("/dbsend")
